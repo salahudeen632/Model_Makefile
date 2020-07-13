@@ -4,10 +4,10 @@
 USE_ICC = 0
 usePARDISO = 1
 useGREATWHITE = 0
-MODEL_INCLUDE =../../../..
-GREATWHITE_INCLUDE= $(MODEL_INCLUDE)/../GreatWhite
-EIGEN_INCLUDE =/usr/local/include
-MKL_INCLUDE=/opt/intel/mkl/include
+MODEL_INCLUDE =/home/s.t.d.pritchard/local_builds/Model
+#GREATWHITE_INCLUDE=
+EIGEN_INCLUDE=/apps/libraries/eigen/3.3.7/el7/AVX512/gnu-8.1/include/eigen3
+MKL_INCLUDE=/apps/compilers/intel/2018.3/compilers_and_libraries/linux/mkl/include
 
 
 ##########################################################
@@ -18,7 +18,7 @@ IDIR += -I./
 IDIR += -I$(all_header_dir)
 #IDIR += -I$(MODEL_INCLUDE)
 IDIR += -I$(EIGEN_INCLUDE)
-IDIR += -I$(GREATWHITE_INCLUDE)
+#IDIR += -I$(GREATWHITE_INCLUDE)
 
 ##########################################################
 # COMPILER SETTINGS - DO NOT EDIT-
@@ -31,7 +31,7 @@ ifeq ($(USE_ICC), 1)
 	CFLAGS	 = -O3
 	CFLAGS	+= -xhost
 	#CFLAGS	+= -fast
-	CFLAGS	+= -qopenmp 
+	CFLAGS	+= -qopenmp
 	CFLAGS	+= -std=c++17
 else
 	CC= g++
@@ -52,7 +52,7 @@ endif
 
 
 # enable warnings
-CFLAGS += -Wall 
+CFLAGS += -Wall
 CFLAGS += -Wextra
 
 ############################################
@@ -66,19 +66,19 @@ ifeq ($(usePARDISO), 1)
 		MKL_LIB=/opt/intel/mkl/lib
 		INTEL_LIB=/opt/intel/lib
 		LIBS += -L $(MKL_LIB) -L $(INTEL_LIB)
-#		LIBS += -lmkl_intel_lp64 -lmkl_core -lmkl_intel_thread 
+#		LIBS += -lmkl_intel_lp64 -lmkl_core -lmkl_intel_thread
 		LIBS += -lmkl_intel_lp64 -lmkl_core -lmkl_intel_thread -liomp5 -lpthread -lm -ldl
 # export DYLD_LIBRARY_PATH=/opt/intel/mkl/lib:$DYLD_LIBRARY_PATH
 # export DYLD_LIBRARY_PATH=/opt/intel/lib:$DYLD_LIBRARY_PATH
 	endif
 
 	ifeq ($(OS),Linux)
-		MKL_LIB=/opt/intel/mkl/lib/intel64
+		MKL_LIB=/apps/compilers/intel/2018.3/compilers_and_libraries/linux/mkl/lib/intel64_lin/
 		LIBS += -L $(MKL_LIB)
 		ifeq ($(USE_ICC), 1)
-			LIBS += -Wl,--start-group -lmkl_intel_lp64 -lmkl_core -lmkl_intel_thread -Wl,--end-group 
+			LIBS += -Wl,--start-group -lmkl_intel_lp64 -lmkl_core -lmkl_intel_thread -Wl,--end-group
 		else
-			LIBS += -Wl,--start-group -lmkl_intel_lp64 -lmkl_core -lmkl_gnu_thread -Wl,--end-group 
+			LIBS += -Wl,--start-group -lmkl_intel_lp64 -lmkl_core -lmkl_gnu_thread -Wl,--end-group
 		endif
 # export LD_LIBRARY_PATH=/opt/intel/mkl/lib/intel64:$LD_LIBRARY_PATH
 # export LD_LIBRARY_PATH=/opt/intel/lib/intel64:$LD_LIBRARY_PATH
@@ -107,7 +107,7 @@ all:
 ##########################################################
 OBJS 	= DDomp
 
-$(OBJS): 
+$(OBJS):
 	@echo making DDomp
 	$(CC) main.cpp -o  $(OBJS)  $(CFLAGS) $(LIBS) $(IDIR)
 
@@ -200,12 +200,12 @@ ifeq ($(Dexists),1)
 	@echo emptying folder D
 	@find D/ -name D_\*.txt -exec rm {} +;
 	@find D/ -name D_\*.bin -exec rm {} +;
-endif	
+endif
 ifeq ($(Sexists),1)
 	@echo emptying folder S
 	@find S/ -name S_\*.txt -exec rm {} +;
 	@find S/ -name S_\*.bin -exec rm {} +;
-endif	
+endif
 ifeq ($(Uexists),1)
 	@echo emptying folder U
 	@find U/ -name U_\*.txt -exec rm {} +;
@@ -219,7 +219,7 @@ endif
 ifeq ($(TGAexists),1)
 	@echo emptying folder tga
 	@find tga/ -name image_\*.tga -exec rm {} +;
-endif	
+endif
 ifeq ($(JPGexists),1)
 	@echo emptying folder jpg
 	@find jpg/ -name image_\*.jpg -exec rm {} +;
@@ -228,4 +228,3 @@ endif
 ##########################################################
 # valgrind commands
 # valgrind --vex-guest-max-insns=25 --track-origins=yes ./DDomp
-
