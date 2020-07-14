@@ -3,8 +3,8 @@
 ##########################################################
 USE_ICC = 0
 usePARDISO = 1
-#useGREATWHITE = 0
-MODEL_INCLUDE = /home/s.s.mohamedkunju/Model
+useGREATWHITE = 0
+MODEL_INCLUDE =	/home/s.s.mohamedkunju/Model
 #GREATWHITE_INCLUDE=
 EIGEN_INCLUDE=/apps/libraries/eigen/3.3.7/el7/AVX512/gnu-8.1/include/eigen3
 MKL_INCLUDE=/apps/compilers/intel/2018.3/compilers_and_libraries/linux/mkl/include
